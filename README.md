@@ -35,7 +35,7 @@
 ## 팀원 소개
 |                이종훈                |                이종혁                |               임강민                |                장태종                |
 |   ---------   |   ----------- | -----------   |   ---------  |
-|![종훈](https://github.com/GreatestBear/TechToNic/assets/120161508/9e2164b3-a26e-4b2b-8455-431d23ca05c7){:width="25%" height="25%"}| ![종혁](https://github.com/GreatestBear/TechToNic/assets/120161508/15318a77-2aaf-460b-abda-76cd550ac941) | ![강민](https://github.com/GreatestBear/TechToNic/assets/120161508/3a13ce5c-5e16-4b25-adac-a5b6d5f2d935) | ![태종](https://github.com/GreatestBear/TechToNic/assets/120161508/00f66586-8229-471c-b1a7-571c64033613) |
+|<img src="https://github.com/GreatestBear/TechToNic/assets/120161508/9e2164b3-a26e-4b2b-8455-431d23ca05c7" width="25%" height="25%">| ![종혁](https://github.com/GreatestBear/TechToNic/assets/120161508/15318a77-2aaf-460b-abda-76cd550ac941) | ![강민](https://github.com/GreatestBear/TechToNic/assets/120161508/3a13ce5c-5e16-4b25-adac-a5b6d5f2d935) | ![태종](https://github.com/GreatestBear/TechToNic/assets/120161508/00f66586-8229-471c-b1a7-571c64033613) |
 
 
           
