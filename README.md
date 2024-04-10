@@ -37,5 +37,11 @@
 |   ---------   |   ----------- | -----------   |   ---------  |
 |![54](https://github.com/GreatestBear/TechToNic/assets/114595890/00545205-82dd-426d-a9b7-73b208b89b73)| ![53](https://github.com/GreatestBear/TechToNic/assets/114595890/ec0c8a0d-dad8-4c52-a0c5-450fbd014ab7) | ![52](https://github.com/GreatestBear/TechToNic/assets/114595890/613404b9-a93c-4cd5-82d6-41b43ed41eb8) | ![태종](https://github.com/GreatestBear/TechToNic/assets/120161508/00f66586-8229-471c-b1a7-571c64033613) |
 
+이종훈(Frontend): UI/UX 설계 및 디자인, UI 컴포넌트 개발
 
+이종혁(Frontend): UI/UX 설계 및 디자인, GPT API 기능 구현
+
+임강민(Backend): 데이터베이스 설계 및 구현
+
+장태종(Backend): Spring 프레임워크, 앱 기능 및 서버 설계 구현
           
