@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
-
-
+import HeaderComponent from './HeaderComponent'; 
+import ButtonComponent_0 from './ButtonComponent_0';
 
 const UserInfoScreen = ({ navigation }) => {
     const submit = () => {
@@ -9,11 +9,13 @@ const UserInfoScreen = ({ navigation }) => {
         navigation.navigate('UserInfo_1');
     };
     
+    
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>소셜 로그인 완료</Text>
-            <Button onPress={submit} title="계속하기" color="#5886FE" /> 
-        </View>
+             <HeaderComponent>소셜 로그인 완료</HeaderComponent>
+             <View style={{ marginBottom: 20 }} />
+             <ButtonComponent_0 onPress={submit} title="계속하기" />
+       </View>
     );
 };
 

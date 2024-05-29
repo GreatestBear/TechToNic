@@ -1,7 +1,28 @@
-import React from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity, SafeAreaView } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, Image, SafeAreaView, Dimensions } from 'react-native';
+import HeaderComponent from './HeaderComponent';
+import ButtonComponent_0 from './ButtonComponent_0';
 
 const AddMedScreen = ({ navigation }) => {
+  const [windowWidth, setWindowWidth] = useState(Dimensions.get('window').width);
+
+  // 창 크기가 변경될 때마다 새로운 창 크기를 설정합니다.
+  useEffect(() => {
+    const updateDimensions = ({ window }) => {
+      setWindowWidth(window.width);``
+    };
+
+    const subscription = Dimensions.addEventListener('change', updateDimensions);
+
+    return () => {
+      subscription?.remove();
+    };
+  }, []);
+
+  const handlePrevious = () => {
+    navigation.goBack();
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
@@ -9,20 +30,27 @@ const AddMedScreen = ({ navigation }) => {
           source={require('./assets/Med.png')} // 약 이미지 경로를 설정하세요
           style={styles.pillImage}
         />
-        <Text style={styles.titleText}>복용하고 있는 약을 검색해보세요</Text>
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>사진으로 검색하기</Text>
-        </TouchableOpacity>
-        <TouchableOpacity 
-          style={styles.button}
-          onPress={() => navigation.navigate('AddMed_1')} // 'AddMed_1'은 네비게이터에 등록된 화면의 이름이어야 합니다.
-        >
-          <Text style={styles.buttonText}>제품명/성분명 검색</Text>
-        </TouchableOpacity>
+        <HeaderComponent>복용하고 있는 약을{'\n'}검색해보세요</HeaderComponent>
+
+        <View style={{ marginBottom: 10 }} />
+        
+        <ButtonComponent_0
+          title="사진으로 검색하기"
+          onPress={() => console.log('사진으로 검색하기')}
+          style={{ width: windowWidth * 0.9, backgroundColor:'#6c757d' }}
+        />
+        <ButtonComponent_0
+          title="제품명/성분명 검색"
+          onPress={() => navigation.navigate('AddMed_1')}
+          style={{ width: windowWidth * 0.9, backgroundColor:'#6c757d' }}
+        />
+  
       </View>
-      <TouchableOpacity style={styles.backButton}>
-        <Text style={styles.backButtonText}>이전</Text>
-      </TouchableOpacity>
+      <ButtonComponent_0
+        title="이전"
+        onPress={handlePrevious}
+        style={{ width: windowWidth * 0.9, position: 'absolute', bottom: 20 }}
+      />
     </SafeAreaView>
   );
 };
@@ -40,9 +68,9 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   pillImage: {
-    width: 100,
-    height: 100,
-    marginBottom: 20,
+    width: 150,
+    height: 150,
+    marginBottom: 10,
   },
   titleText: {
     fontSize: 30,
@@ -50,30 +78,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 20,
   },
-  button: {
-    backgroundColor: '#E8E8E8',
-    padding: 15,
-    borderRadius: 10,
-    width: '100%',
-    alignItems: 'center',
-    marginBottom: 10,
-  },
-  buttonText: {
-    fontSize: 18,
-  },
-  backButton: {
-    position: 'absolute',
-    bottom: 20,
-    backgroundColor: '#5886FE',
-    padding: 15,
-    borderRadius: 10,
-    width: '90%',
-    alignItems: 'center',
-  },
-  backButtonText: {
-    color: '#fff',
-    fontSize: 18,
-  }
 });
 
 export default AddMedScreen;

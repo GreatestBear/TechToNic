@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
+
 const { width } = Dimensions.get('window');
 const iconSize = width * 0.3; // 아이콘 크기를 화면 너비의 15%로 설정
 

@@ -1,10 +1,17 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import HeaderComponent from './HeaderComponent';
+import ButtonComponent_0 from './ButtonComponent_0';
 
 const UserInfoScreen_fin = ({ navigation }) => {
   const handleNext = () => {
-    // 다음 단계로 네비게이션
-    navigation.navigate('MainScreen');
+    
+    navigation.navigate('App', {
+      screen: '메인',
+      params: {
+        screen: 'Main',
+      },
+    });
   };
 
   return (
@@ -15,9 +22,9 @@ const UserInfoScreen_fin = ({ navigation }) => {
       />
       <Text style={styles.completionText}>기본 정보 입력이{'\n'}완료 되었어요</Text>
       <Text style={styles.continueText}>다음 단계를 계속 진행해주세요</Text>
-      <TouchableOpacity onPress={handleNext} style={styles.nextButton}>
-        <Text style={styles.nextButtonText}>다음으로</Text>
-      </TouchableOpacity>
+      <View style={styles.navContainer}>
+        <ButtonComponent_0 title="다음으로" onPress={handleNext} />
+      </View>
     </View>
   );
 };
@@ -31,8 +38,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   logo: {
-    width: 300, // 로고 크기 조정 (훨씬 크게)
-    height: 300, // 로고 크기 조정 (훨씬 크게)
+    width: 300, 
+    height: 300,
     marginBottom: 30,
   },
   completionText: {
@@ -51,7 +58,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#5886FE',
     paddingVertical: 15, // 버튼 세로 크기
     paddingHorizontal: 50, // 버튼 가로 크기
-    borderRadius: 20, // 더 큰 값을 적용하여 더 부드러운 사각형으로 만듭니다.
+    borderRadius: 20, 
   },
   nextButtonText: {
     fontSize: 16,

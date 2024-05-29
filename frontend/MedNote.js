@@ -1,18 +1,33 @@
-import React from 'react';
-import { StyleSheet, View, Text, FlatList, SafeAreaView, TouchableOpacity, Image } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, View, Text, FlatList, SafeAreaView, TouchableOpacity, Image, Dimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useMedications } from './MedContext'; // Context import
+import HeaderComponent from './HeaderComponent';
+import ButtonComponent_0 from './ButtonComponent_0';
 
 const MedNote = ({ navigation }) => {
   const { medications, removeMedication } = useMedications(); // Context 사용
+  const [windowWidth, setWindowWidth] = useState(Dimensions.get('window').width);
+
+  useEffect(() => {
+    const updateDimensions = ({ window }) => {
+      setWindowWidth(window.width);
+    };
+
+    const subscription = Dimensions.addEventListener('change', updateDimensions);
+
+    return () => {
+      subscription?.remove();
+    };
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.navigate('MainScreen')}>
+        <TouchableOpacity onPress={() => navigation.navigate('Main')}>
           <Ionicons name="arrow-back" size={30} color="black" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>복용중인 약</Text>
+        <HeaderComponent fontSizeMultiplier={0.06}> 복용중인 약 </HeaderComponent>
       </View>
       <FlatList
         data={medications}
@@ -39,9 +54,11 @@ const MedNote = ({ navigation }) => {
         )}
       />
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button} onPress={() => navigation.goBack()}>
-          <Text style={styles.buttonText}>이전</Text>
-        </TouchableOpacity>
+        <ButtonComponent_0
+          title="이전"
+          onPress={() => navigation.goBack()}
+          style={{ width: windowWidth * 0.9 }}
+        />
       </View>
     </SafeAreaView>
   );
@@ -60,7 +77,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#ccc',
   },
   headerTitle: {
-    fontSize: 30,
+    fontSize: 24,
     fontWeight: 'bold',
     marginLeft: 10,
   },
@@ -92,17 +109,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     padding: 10,
     alignItems: 'center',
-  },
-  button: {
-    backgroundColor: '#5886FE',
-    padding: 15,
-    borderRadius: 5,
-    width: '90%',
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: 'white',
-    fontSize: 18,
+    marginBottom: 20,
   },
 });
 

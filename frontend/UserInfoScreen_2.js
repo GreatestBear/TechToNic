@@ -1,23 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Button, TextInput, StyleSheet, TouchableOpacity, Dimensions, Alert } from 'react-native';
+import HeaderComponent from './HeaderComponent';
+import ButtonComponent_0 from './ButtonComponent_0';
+
 
 
 const UserInfoScreen1 = ({ navigation }) => {
   const [height, setHeight] = useState('');
   const [weight, setWeight] = useState('');
+  const [age, setage] = useState('');
   const [isSmoker, setIsSmoker] = useState(null);
   const [windowWidth, setWindowWidth] = useState(Dimensions.get('window').width);
 
   // 창 크기가 변경될 때마다 새로운 창 크기를 설정합니다.
   useEffect(() => {
-    const updateDimensions = () => {
-      setWindowWidth(Dimensions.get('window').width);
+    const updateDimensions = ({ window }) => {
+      setWindowWidth(window.width);
     };
 
-    Dimensions.addEventListener('change', updateDimensions);
+    const subscription = Dimensions.addEventListener('change', updateDimensions);
 
     return () => {
-      Dimensions.removeEventListener('change', updateDimensions);
+      subscription?.remove();
     };
   }, []);
 
@@ -35,50 +39,62 @@ const UserInfoScreen1 = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={[styles.title, { fontSize: windowWidth * 0.06 }]}>1 / 5 </Text>
-      <Text style={[styles.title, { fontSize: windowWidth * 0.06 }]}>기본 건강정보를 알려주세요</Text>
-      <Text style={[styles.subtitle, { fontSize: windowWidth * 0.05 }]}>키와 몸무게, 나이를 알려주세요</Text>
 
-      <Text style={[styles.label, { fontSize: windowWidth * 0.04 }]}>키를 입력해 주세요</Text>
+      <View style={{ marginTop: 40 }} />
+      <HeaderComponent> 1 / 5</HeaderComponent>
+      <Text style={[styles.subtitle, { fontSize: windowWidth * 0.07, textAlign: 'center', }]}>기본 건강 정보를 알려주세요</Text>
+      <Text style={[styles.subtitle, { fontSize: windowWidth * 0.06 }]}>키와 몸무게, 나이를 알려주세요</Text>
+
+      <Text style={[styles.subtitle, { fontSize: windowWidth * 0.07 }]}>키를 입력해 주세요</Text>
       <TextInput
-        style={[styles.input, { fontSize: windowWidth * 0.04 }]}
+        style={[styles.input, { fontSize: windowWidth * 0.07 }]}
         value={height}
         onChangeText={setHeight}
         keyboardType="numeric"
       />
 
-      <Text style={[styles.label, { fontSize: windowWidth * 0.04 }]}>몸무게를 입력해주세요</Text>
+      <Text style={[styles.subtitle, { fontSize: windowWidth * 0.07 }]}>몸무게를 입력해 주세요</Text>
       <TextInput
-        style={[styles.input, { fontSize: windowWidth * 0.04 }]}
+        style={[styles.input, { fontSize: windowWidth * 0.07 }]}
         value={weight}
         onChangeText={setWeight}
         keyboardType="numeric"
       />
 
-      <Text style={[styles.label, { fontSize: windowWidth * 0.04 }]}>흡연자이신가요?</Text>
+      <Text style={[styles.subtitle, { fontSize: windowWidth * 0.07 }]}>만 나이를 입력해 주세요</Text>
+      <TextInput
+        style={[styles.input, { fontSize: windowWidth * 0.07 }]}
+        value={age}
+        onChangeText={setage}
+        keyboardType="numeric"
+      />
+
+      <Text style={[styles.subtitle, { fontSize: windowWidth * 0.07 }]}>흡연자이신가요?</Text>
+
       <View style={styles.buttonContainer}>
+        
         <TouchableOpacity
-          style={[styles.choiceButton, isSmoker ? styles.selectedButton : null, { width: windowWidth * 0.3 }]}
+          style={[styles.choiceButton, isSmoker ? styles.selectedButton : null, { width: windowWidth * 0.9 }]}
           onPress={() => setIsSmoker(true)}
         >
-          <Text style={[styles.choiceText, { fontSize: windowWidth * 0.04 }]}>네</Text>
+         <Text style={[styles.choiceText, { fontSize: windowWidth * 0.05, textAlign: 'center' }]}>네</Text>
         </TouchableOpacity>
+
+        <View style={{ marginBottom: 20 }} />
+
         <TouchableOpacity
-          style={[styles.choiceButton, isSmoker === false ? styles.selectedButton : null, { width: windowWidth * 0.3 }]}
+          style={[styles.choiceButton, isSmoker === false ? styles.selectedButton : null, { width: windowWidth * 0.9 }]}
           onPress={() => setIsSmoker(false)}
         >
-          <Text style={[styles.choiceText, { fontSize: windowWidth * 0.04 }]}>아니오</Text>
+          <Text style={[styles.choiceText, { fontSize: windowWidth * 0.05, textAlign: 'center' }]}>아니오</Text>
         </TouchableOpacity>
       </View>
 
       <View style={styles.navContainer}>
-        <TouchableOpacity style={[styles.navButton, { width: windowWidth * 0.4 }]} onPress={handlePrevious}>
-          <Text style={styles.navButtonText}>이전</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={[styles.navButton, { width: windowWidth * 0.4 }]} onPress={handleNext}>
-          <Text style={styles.navButtonText}>다음</Text>
-        </TouchableOpacity>
+        <ButtonComponent_0 title="이전" onPress={handlePrevious} style={{ width: windowWidth * 0.4 }} />
+        <ButtonComponent_0 title="다음" onPress={handleNext} style={{ width: windowWidth * 0.4 }} />
       </View>
+
     </View>
   );
 };
@@ -114,7 +130,7 @@ const styles = StyleSheet.create({
     borderRadius: 20, // 더 큰 값을 적용하여 더 부드러운 사각형으로 만듭니다.
   },
   buttonContainer: {
-    flexDirection: 'row',
+    flexDirection: 'column',
     justifyContent: 'space-around',
     marginBottom: 20,
   },
@@ -132,8 +148,9 @@ const styles = StyleSheet.create({
     color: '#000',
   },
   navContainer: {
+    justifyContent: 'center', // 가로축 가운데 정렬
+    alignItems: 'center', // 세로축 가운데 정렬
     flexDirection: 'row',
-    justifyContent: 'space-between',
   },
   navButton: {
     padding: 10,

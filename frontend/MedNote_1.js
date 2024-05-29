@@ -60,7 +60,7 @@ const MedNote_1 = ({ navigation, route }) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.navigate('MainScreen')}>
+        <TouchableOpacity onPress={() => navigation.navigate('Main')}>
           <Ionicons name="arrow-back" size={30} color="black" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>알람 시간 설정</Text>
@@ -104,7 +104,7 @@ const MedNote_1 = ({ navigation, route }) => {
         <TouchableOpacity style={styles.button} onPress={() => navigation.goBack()}>
           <Text style={styles.buttonText}>이전</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('MainScreen')}>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Main')}>
           <Text style={styles.buttonText}>메인 화면으로</Text>
         </TouchableOpacity>
       </View>

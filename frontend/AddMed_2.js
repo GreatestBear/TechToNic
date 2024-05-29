@@ -1,10 +1,25 @@
-import React from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, FlatList, SafeAreaView, Image } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, View, Text, TouchableOpacity, FlatList, SafeAreaView, Image, Dimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useMedications } from './MedContext'; // Context import
+import HeaderComponent from './HeaderComponent';
+import ButtonComponent_0 from './ButtonComponent_0';
 
 const AddMed_2 = ({ navigation }) => {
   const { medications, removeMedication } = useMedications(); // Context 사용
+  const [windowWidth, setWindowWidth] = useState(Dimensions.get('window').width);
+
+  useEffect(() => {
+    const updateDimensions = ({ window }) => {
+      setWindowWidth(window.width);
+    };
+
+    const subscription = Dimensions.addEventListener('change', updateDimensions);
+
+    return () => {
+      subscription?.remove();
+    };
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -31,12 +46,16 @@ const AddMed_2 = ({ navigation }) => {
         )}
       />
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('AddMed_1')}>
-          <Text style={styles.buttonText}>더 추가하기</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('MainScreen')}>
-          <Text style={styles.buttonText}>메인 화면으로</Text>
-        </TouchableOpacity>
+        <ButtonComponent_0
+          title="더 추가하기"
+          onPress={() => navigation.navigate('AddMed_1')}
+          style={{ width: windowWidth * 0.4 }}
+        />
+        <ButtonComponent_0
+          title="메인 화면으로"
+          onPress={() => navigation.navigate('Main')}
+          style={{ width: windowWidth * 0.4 }}
+        />
       </View>
     </SafeAreaView>
   );
@@ -55,7 +74,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#ccc',
   },
   headerTitle: {
-    fontSize: 30,
+    fontSize: 24,
     fontWeight: 'bold',
     marginLeft: 10,
   },
@@ -80,15 +99,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     padding: 10,
-  },
-  button: {
-    backgroundColor: '#5886FE',
-    padding: 15,
-    borderRadius: 5,
-  },
-  buttonText: {
-    color: 'white',
-    fontSize: 18,
   },
 });
 

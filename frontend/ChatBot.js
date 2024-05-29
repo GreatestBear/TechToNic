@@ -2,10 +2,9 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { GiftedChat } from 'react-native-gifted-chat';
 import { View, StyleSheet } from 'react-native';
 
-
 const App = () => {
   const [messages, setMessages] = useState([]);
-  const API_KEY = "sk-proj-ysp2Z2ErZRBOwIUwG0zJT3BlbkFJpfbgM5hq3pe8qktqdPUl";
+  const API_KEY = "sk-proj-ysp2Z2ErZRBOwIUwG0zJT3BlbkFJpfbgM5hq3pe8qktqdPUl"; 
 
   useEffect(() => {
     setMessages([

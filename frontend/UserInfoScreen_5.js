@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, StyleSheet, Dimensions, Alert } from 'react-native';
+import HeaderComponent from './HeaderComponent';
+import ButtonComponent_0 from './ButtonComponent_0';
 
 const UserInfoScreen_5 = ({ navigation }) => {
   const [selectedMedications, setSelectedMedications] = useState([]);
@@ -7,15 +9,18 @@ const UserInfoScreen_5 = ({ navigation }) => {
 
   // 창 크기가 변경될 때마다 새로운 창 크기를 설정합니다.
   useEffect(() => {
-    const updateDimensions = () => {
-      setWindowWidth(Dimensions.get('window').width);
+    const updateDimensions = ({ window }) => {
+      setWindowWidth(window.width);
     };
-    Dimensions.addEventListener('change', updateDimensions);
+
+    // 이벤트 리스너를 추가합니다.
+    const subscription = Dimensions.addEventListener('change', updateDimensions);
+
+    // 컴포넌트가 언마운트될 때 이벤트 리스너를 제거합니다.
     return () => {
-      Dimensions.removeEventListener('change', updateDimensions);
+      subscription?.remove();
     };
   }, []);
-
   const medications = [
     "갑상건기능저하증약", "갑상선기능항진증약", "고지혈증약", "고혈압약",
     "골다공증약", "당뇨약", "덱스트로메토르판(기침약)", "디곡신(심장약)",
@@ -49,8 +54,9 @@ const UserInfoScreen_5 = ({ navigation }) => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      <View style={{ marginTop: 40 }} />
       <Text style={[styles.title, { fontSize: windowWidth * 0.06 }]}>4 / 5</Text>
-      <Text style={[styles.subtitle, { fontSize: windowWidth * 0.05 }]}>현재 먹고 있는 약을 알려주세요</Text>
+      <Text style={[styles.subtitle, { fontSize: windowWidth * 0.07 }]}>현재 먹고 있는 약을 알려주세요</Text>
       {medications.map((medication, index) => (
         <TouchableOpacity
           key={index}
@@ -60,13 +66,9 @@ const UserInfoScreen_5 = ({ navigation }) => {
           <Text style={[styles.buttonText, { fontSize: windowWidth * 0.04 }]}>{medication}</Text>
         </TouchableOpacity>
       ))}
-      <View style={styles.navContainer}>
-        <TouchableOpacity style={[styles.navButton, { width: windowWidth * 0.4 }]} onPress={handlePrevious}>
-          <Text style={styles.navButtonText}>이전</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={[styles.navButton, { width: windowWidth * 0.4 }]} onPress={handleNext}>
-          <Text style={styles.navButtonText}>다음</Text>
-        </TouchableOpacity>
+     <View style={styles.navContainer}>
+        <ButtonComponent_0 title="이전" onPress={handlePrevious} style={{ width: windowWidth * 0.4 }} />
+        <ButtonComponent_0 title="다음" onPress={handleNext} style={{ width: windowWidth * 0.4 }} />
       </View>
     </ScrollView>
   );
@@ -102,8 +104,9 @@ const styles = StyleSheet.create({
     color: '#000',
   },
   navContainer: {
+    justifyContent: 'center', // 가로축 가운데 정렬
+    alignItems: 'center', // 세로축 가운데 정렬
     flexDirection: 'row',
-    justifyContent: 'space-between',
     marginTop: 20,
     width: '100%',
   },

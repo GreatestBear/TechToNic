@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import HeaderComponent from './HeaderComponent'; 
+import ButtonComponent_0 from './ButtonComponent_0';
+
 
 export default function WelcomeScreen() {
   const navigation = useNavigation();
@@ -8,12 +11,14 @@ export default function WelcomeScreen() {
 
   // 창 크기가 변경될 때마다 새로운 창 크기를 설정합니다.
   useEffect(() => {
-    const updateDimensions = () => {
-      setWindowWidth(Dimensions.get('window').width);
+    const updateDimensions = ({ window }) => {
+      setWindowWidth(window.width);
     };
-    Dimensions.addEventListener('change', updateDimensions);
+
+    const subscription = Dimensions.addEventListener('change', updateDimensions);
+
     return () => {
-      Dimensions.removeEventListener('change', updateDimensions);
+      subscription?.remove();
     };
   }, []);
 
@@ -23,25 +28,37 @@ export default function WelcomeScreen() {
 
   function handleExitApp() {
     console.log("메인 화면으로"); // 버튼 누른다고 앱 종료는 지원 X -> 메인 화면으로 이동하도록 변경
-    navigation.navigate('MainScreen'); // 메인 화면으로 이동하도록 변경
+    // navigate to MainScreen
+    navigation.navigate('App', {
+      screen: '메인',
+      params: {
+        screen: 'Main',
+      },
+    });
+    
   }
 
   return (
     <View style={styles.container}>
       <Image source={require('./assets/pyeon.png')} style={[styles.logo, { width: windowWidth * 0.9, height: windowWidth * 0.9 }]} />
-      <Text style={[styles.mainText, { fontSize: windowWidth * 0.08 }]}>
-        반가워요 사용자님 
-      </Text>
-      <Text style={[styles.mainText, { fontSize: windowWidth * 0.08 }]}>
-        건강 상태를 체크해 볼까요?
-      </Text>
-      <TouchableOpacity style={[styles.buttonBlue, { width: windowWidth * 0.7 }]} onPress={handleCheckHealth}>
-        <Text style={styles.buttonText}>체크하기</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={[styles.buttonGray, { width: windowWidth * 0.7 }]} onPress={handleExitApp}>
-        <Text style={styles.buttonText}>나중에</Text>
-      </TouchableOpacity>
-      <Text style={styles.estimateText}>예상시간 1분</Text>
+  
+      <HeaderComponent>반가워요 사용자님{'\n'}건강 상태를 체크해 볼까요?</HeaderComponent>
+      <View style={{ marginBottom: 20 }} />
+  
+      <ButtonComponent_0 
+        title="체크하기" 
+        onPress={handleCheckHealth} 
+        style={{ width: windowWidth * 0.9,}}
+      />
+
+      <ButtonComponent_0 
+        title="나중에" 
+        onPress={handleExitApp} 
+        style={{ width: windowWidth * 0.9, backgroundColor:'#6c757d'}} 
+      />
+
+    <View style={{ marginBottom: 10 }} />
+       <Text style={styles.estimateText}>예상시간 1분</Text>
     </View>
   );
 }
@@ -59,9 +76,9 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   buttonBlue: {
-    backgroundColor: '#007bff',
+    backgroundColor: '#5886FE',
     padding: 15,
-    borderRadius: 25,
+    borderRadius: 15,
     alignItems: 'center',
     marginBottom: 10
   },
@@ -79,7 +96,7 @@ const styles = StyleSheet.create({
   estimateText: {
     fontSize: 16
   },
-  logo: {
+  margin: {
     marginBottom: 20,
   },
 });

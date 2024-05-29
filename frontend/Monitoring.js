@@ -1,34 +1,49 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Image, Dimensions } from 'react-native';
+import HeaderComponent from './HeaderComponent';
+import ButtonComponent_0 from './ButtonComponent_0';
 
-function Monitoring({ navigation }) {
+const Monitoring = ({ navigation }) => {
+  const [windowWidth, setWindowWidth] = useState(Dimensions.get('window').width);
+
+  // 창 크기가 변경될 때마다 새로운 창 크기를 설정합니다.
+  useEffect(() => {
+    const updateDimensions = ({ window }) => {
+      setWindowWidth(window.width);
+    };
+
+    const subscription = Dimensions.addEventListener('change', updateDimensions);
+
+    return () => {
+      subscription?.remove();
+    };
+  }, []);5
+
   return (
     <View style={styles.container}>
       <Image source={require('./assets/pyeon.png')} style={styles.image} />
-      <Text style={styles.header}>
-        어떤 건강 정보를 <Text style={styles.highlight}>확인</Text>하시겠어요?
-      </Text>
-      <TouchableOpacity
-        style={styles.button}
+      <HeaderComponent>어떤 건강 정보를 확인하시겠어요?</HeaderComponent>
+
+      <View style={{ marginBottom: 20 }} />
+      
+      <ButtonComponent_0
+        title="기본 정보(키, 몸무게, 흡연/음주 여부)"
         onPress={() => navigation.navigate('Monitoring1')}
-      >
-        <Text style={[styles.buttonText, { fontSize: 16 }]}>기본 정보(키, 몸무게, 흡연/음주 여부)</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.button}
+        style={{ width: windowWidth * 0.8 }}
+      />
+      <ButtonComponent_0
+        title="갖고 있는 질환"
         onPress={() => navigation.navigate('Monitoring2')}
-      >
-        <Text style={[styles.buttonText, { fontSize: 16 }]}>갖고 있는 질환</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.button}
+        style={{ width: windowWidth * 0.8 }}
+      />
+      <ButtonComponent_0
+        title="복용 중인 약"
         onPress={() => navigation.navigate('Monitoring3')}
-      >
-        <Text style={[styles.buttonText, { fontSize: 16 }]}>복용 중인 약</Text>
-      </TouchableOpacity>
+        style={{ width: windowWidth * 0.8 }}
+      />
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -36,34 +51,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 16,
+    backgroundColor:'#fff',
   },
   image: {
-    width: 250, // 이미지 너비를 200으로 설정
-    height: 250, // 이미지 높이를 200으로 설정
-    marginBottom: 20,
-  },
-  header: {
-    fontSize: 24,
-    marginBottom: 20,
-    textAlign: 'center',
-  },
-  highlight: {
-    color: 'blue',
-  },
-  button: {
-    backgroundColor: '#007BFF',  // 버튼 색상을 파란색으로 변경
-    padding: 15,
-    margin: 10,
-    borderRadius: 25,
-    width: '80%',
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: 'white',
-    fontSize: 18,
+    width: 300, // 이미지 너비를 300으로 설정
+    height: 300, // 이미지 높이를 300으로 설정
   },
 });
 
 export default Monitoring;
-
-

@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, TextInput, TouchableOpacity, FlatList, Text, SafeAreaView, Image } from 'react-native';
+import { StyleSheet, View, TextInput, TouchableOpacity, FlatList, Text, SafeAreaView, Image, Dimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { XMLParser } from 'fast-xml-parser';
 import { useMedications } from './MedContext'; // Context import
+import HeaderComponent from './HeaderComponent';
+import ButtonComponent_0 from './ButtonComponent_0';
+
 
 const AddMed_1 = ({ navigation }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [results, setResults] = useState([]);
+  const [windowWidth, setWindowWidth] = useState(Dimensions.get('window').width);
   const { medications, addMedication } = useMedications(); // Context 사용
 
   const API_KEY = "8RyphMMsmI61TvXAoVjmI1npjlL0y7pRobz54oDEZjm8uYkdvVaXAXBUNBrNVsErukBQEa8eL86/9McxvxLHCQ==";
@@ -42,23 +46,49 @@ const AddMed_1 = ({ navigation }) => {
     }
   }, [searchTerm]);
 
+  useEffect(() => {
+    const updateDimensions = ({ window }) => {
+      setWindowWidth(window.width);
+    };
+
+    const subscription = Dimensions.addEventListener('change', updateDimensions);
+
+    return () => {
+      subscription?.remove();
+    };
+  }, []);
+
+  const handlePrevious = () => {
+    navigation.navigate('AddMed_0');
+  };
+
+  const handleNext = () => {
+    navigation.navigate('AddMed_2');
+  };
+
   return (
     <SafeAreaView style={styles.container}>
+
       <View style={styles.searchContainer}>
+        
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
+        
         <TextInput
           style={styles.searchInput}
           placeholder="약 성분 혹은 이름 검색"
           value={searchTerm}
           onChangeText={setSearchTerm}
         />
+
         <TouchableOpacity onPress={fetchMedicines}>
           <Ionicons name="search" size={24} color="black" />
         </TouchableOpacity>
+
       </View>
       <FlatList
+        style={styles.flatList}
         data={results}
         keyExtractor={(item) => item.itemSeq.toString()}
         renderItem={({ item }) => (
@@ -75,13 +105,9 @@ const AddMed_1 = ({ navigation }) => {
           </TouchableOpacity>
         )}
       />
-      <View style={styles.footer}>
-        <TouchableOpacity style={styles.footerButton} onPress={() => navigation.navigate('AddMed_0')}>
-          <Text style={styles.footerButtonText}>이전</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.footerButton} onPress={() => navigation.navigate('AddMed_2')}>
-          <Text style={styles.footerButtonText}>다음</Text>
-        </TouchableOpacity>
+      <View style={styles.navContainer}>
+        <ButtonComponent_0 title="이전" onPress={handlePrevious} style={{ width: windowWidth * 0.45 }} />
+        <ButtonComponent_0 title="다음" onPress={handleNext} style={{ width: windowWidth * 0.45 }} />
       </View>
     </SafeAreaView>
   );
@@ -91,11 +117,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  headerContainer: {
+    marginVertical: 20,
+    alignItems: 'center',
+  },
   searchContainer: {
     flexDirection: 'row',
     padding: 10,
     alignItems: 'center',
-    backgroundColor: '#f9f9f9',
+    backgroundColor: '#fff',
   },
   searchInput: {
     flex: 1,
@@ -109,7 +139,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     padding: 10,
     borderBottomWidth: 1,
-    borderBottomColor: '#eee',
+    borderBottomColor: '#fff',
     alignItems: 'center',
     justifyContent: 'space-between',
   },
@@ -121,19 +151,14 @@ const styles = StyleSheet.create({
     height: 50,
     marginRight: 10,
   },
-  footer: {
+  navContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     padding: 10,
+    backgroundColor: '#fff',
   },
-  footerButton: {
-    padding: 10,
-    backgroundColor: '#5886FE',
-    borderRadius: 5,
-  },
-  footerButtonText: {
-    color: 'white',
-    fontSize: 16,
+  flatList: {
+    backgroundColor: '#FCFCFC', 
   },
 });
 

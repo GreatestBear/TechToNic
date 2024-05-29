@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, StyleSheet, Dimensions, Alert } from 'react-native';
+import HeaderComponent from './HeaderComponent';
+import ButtonComponent_0 from './ButtonComponent_0';
 
 const UserInfoScreen_6 = ({ navigation }) => {
   const [hasAllergies, setHasAllergies] = useState(null);
@@ -8,12 +10,16 @@ const UserInfoScreen_6 = ({ navigation }) => {
 
   // 창 크기가 변경될 때마다 새로운 창 크기를 설정합니다.
   useEffect(() => {
-    const updateDimensions = () => {
-      setWindowWidth(Dimensions.get('window').width);
+    const updateDimensions = ({ window }) => {
+      setWindowWidth(window.width);
     };
-    Dimensions.addEventListener('change', updateDimensions);
+
+    // 이벤트 리스너를 추가합니다.
+    const subscription = Dimensions.addEventListener('change', updateDimensions);
+
+    // 컴포넌트가 언마운트될 때 이벤트 리스너를 제거합니다.
     return () => {
-      Dimensions.removeEventListener('change', updateDimensions);
+      subscription?.remove();
     };
   }, []);
 
@@ -43,20 +49,21 @@ const UserInfoScreen_6 = ({ navigation }) => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Text style={[styles.title, { fontSize: windowWidth * 0.06 }]}>5 / 5 </Text>
-      <Text style={[styles.subtitle, { fontSize: windowWidth * 0.05 }]}>특정 알레르기가 있다면 알려주세요.</Text>
+      <View style={{ marginTop: 40 }} />
+      <HeaderComponent>5 / 5</HeaderComponent>
+      <Text style={[styles.subtitle, { fontSize: windowWidth * 0.07, textAlign: 'center' }]}>특정 알레르기가 있다면 알려주세요.</Text>
       <View style={styles.choicesContainer}>
         <TouchableOpacity
-          style={[styles.button, hasAllergies === false ? styles.selectedButton : null, { width: windowWidth * 0.45 }]}
+          style={[styles.choiceButton, hasAllergies === false ? styles.selectedButton : null, { width: windowWidth * 0.45 }]}
           onPress={() => setHasAllergies(false)}
         >
-          <Text style={[styles.buttonText, { fontSize: windowWidth * 0.04 }]}>아니요, 없어요.</Text>
+          <Text style={[styles.choiceText, { fontSize: windowWidth * 0.05, textAlign: 'center' }]}>아니요, 없어요.</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.button, hasAllergies === true ? styles.selectedButton : null, { width: windowWidth * 0.45 }]}
+          style={[styles.choiceButton, hasAllergies === true ? styles.selectedButton : null, { width: windowWidth * 0.45 }]}
           onPress={() => setHasAllergies(true)}
         >
-          <Text style={[styles.buttonText, { fontSize: windowWidth * 0.04 }]}>네, 있어요.</Text>
+          <Text style={[styles.choiceText, { fontSize: windowWidth * 0.05, textAlign: 'center' }]}>네, 있어요.</Text>
         </TouchableOpacity>
       </View>
       {hasAllergies && (
@@ -64,21 +71,17 @@ const UserInfoScreen_6 = ({ navigation }) => {
           {allergies.map((allergy, index) => (
             <TouchableOpacity
               key={index}
-              style={[styles.button, selectedAllergies.includes(allergy) ? styles.selectedButton : null, { width: windowWidth * 0.45 }]}
+              style={[styles.choiceButton, selectedAllergies.includes(allergy) ? styles.selectedButton : null, { width: windowWidth * 0.9 }]}
               onPress={() => setSelectedAllergies(selectedAllergies.includes(allergy) ? selectedAllergies.filter(a => a !== allergy) : [...selectedAllergies, allergy])}
             >
-              <Text style={[styles.buttonText, { fontSize: windowWidth * 0.04 }]}>{allergy}</Text>
+              <Text style={[styles.choiceText, { fontSize: windowWidth * 0.05, textAlign: 'center' }]}>{allergy}</Text>
             </TouchableOpacity>
           ))}
         </React.Fragment>
       )}
       <View style={styles.navContainer}>
-        <TouchableOpacity style={styles.navButton} onPress={handlePrevious}>
-          <Text style={styles.navButtonText}>이전</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.navButton} onPress={handleNext}>
-          <Text style={styles.navButtonText}>다음</Text>
-        </TouchableOpacity>
+        <ButtonComponent_0 title="이전" onPress={handlePrevious} style={{ width: windowWidth * 0.4 }} />
+        <ButtonComponent_0 title="다음" onPress={handleNext} style={{ width: windowWidth * 0.4 }} />
       </View>
     </ScrollView>
   );
@@ -102,38 +105,27 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginBottom: 20,
   },
-  button: {
+  choiceButton: {
     padding: 10,
     borderWidth: 1,
     borderColor: '#ddd',
-    marginBottom: 10,
     borderRadius: 20,
     backgroundColor: '#fff',
-    marginHorizontal: 5,
+    marginBottom: 10,
     alignItems: 'center',
   },
   selectedButton: {
     backgroundColor: '#5886FE',
   },
-  buttonText: {
+  choiceText: {
     color: '#000',
   },
   navContainer: {
+    justifyContent: 'center', // 가로축 가운데 정렬
+    alignItems: 'center', // 세로축 가운데 정렬
     flexDirection: 'row',
-    justifyContent: 'space-between',
     marginTop: 20,
     width: '100%',
-  },
-  navButton: {
-    padding: 10,
-    backgroundColor: '#5886FE',
-    borderRadius: 20,
-    alignItems: 'center',
-    width: '45%',
-  },
-  navButtonText: {
-    color: '#fff',
-    fontWeight: 'bold',
   },
 });
 
