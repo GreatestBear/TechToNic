@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, StyleSheet, Dimensions, Alert } from 'react-native';
 import HeaderComponent from './HeaderComponent';
 import ButtonComponent_0 from './ButtonComponent_0';
+import { useUserInfo } from './UserInfoContext';
 
 const UserInfoScreen_6 = ({ navigation }) => {
-  const [hasAllergies, setHasAllergies] = useState(null);
-  const [selectedAllergies, setSelectedAllergies] = useState([]);
+  const { userInfo, updateUserInfo } = useUserInfo();
   const [windowWidth, setWindowWidth] = useState(Dimensions.get('window').width);
 
   // 창 크기가 변경될 때마다 새로운 창 크기를 설정합니다.
@@ -29,22 +29,30 @@ const UserInfoScreen_6 = ({ navigation }) => {
   ];
 
   const handleNext = () => {
-    if (hasAllergies === null) {
+    if (userInfo.hasAllergies === null) {
       Alert.alert('경고', '알레르기의 유무를 선택해주세요!');
       return;
     }
 
-    if (hasAllergies && selectedAllergies.length === 0) {
+    if (userInfo.hasAllergies && userInfo.selectedAllergies.length === 0) {
       Alert.alert('경고', '알레르기를 선택해주세요! 만약 알레르기가 없으시다면 아니요, 없어요를 선택해주세요!');
       return;
     }
 
-    console.log('Selected Allergies: ', selectedAllergies);
-    navigation.navigate('UserInfo_fin', { selectedAllergies });
+    console.log('Selected Allergies: ', userInfo.selectedAllergies);
+    navigation.navigate('UserInfo_fin', { selectedAllergies: userInfo.selectedAllergies });
   };
 
   const handlePrevious = () => {
     navigation.goBack();
+  };
+
+  const toggleAllergy = (allergy) => {
+    const updatedAllergies = userInfo.selectedAllergies.includes(allergy)
+      ? userInfo.selectedAllergies.filter(a => a !== allergy)
+      : [...userInfo.selectedAllergies, allergy];
+    
+    updateUserInfo('selectedAllergies', updatedAllergies);
   };
 
   return (
@@ -54,25 +62,25 @@ const UserInfoScreen_6 = ({ navigation }) => {
       <Text style={[styles.subtitle, { fontSize: windowWidth * 0.07, textAlign: 'center' }]}>특정 알레르기가 있다면 알려주세요.</Text>
       <View style={styles.choicesContainer}>
         <TouchableOpacity
-          style={[styles.choiceButton, hasAllergies === false ? styles.selectedButton : null, { width: windowWidth * 0.45 }]}
-          onPress={() => setHasAllergies(false)}
+          style={[styles.choiceButton, userInfo.hasAllergies === false ? styles.selectedButton : null, { width: windowWidth * 0.45 }]}
+          onPress={() => updateUserInfo('hasAllergies', false)}
         >
           <Text style={[styles.choiceText, { fontSize: windowWidth * 0.05, textAlign: 'center' }]}>아니요, 없어요.</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.choiceButton, hasAllergies === true ? styles.selectedButton : null, { width: windowWidth * 0.45 }]}
-          onPress={() => setHasAllergies(true)}
+          style={[styles.choiceButton, userInfo.hasAllergies === true ? styles.selectedButton : null, { width: windowWidth * 0.45 }]}
+          onPress={() => updateUserInfo('hasAllergies', true)}
         >
           <Text style={[styles.choiceText, { fontSize: windowWidth * 0.05, textAlign: 'center' }]}>네, 있어요.</Text>
         </TouchableOpacity>
       </View>
-      {hasAllergies && (
+      {userInfo.hasAllergies && (
         <React.Fragment>
           {allergies.map((allergy, index) => (
             <TouchableOpacity
               key={index}
-              style={[styles.choiceButton, selectedAllergies.includes(allergy) ? styles.selectedButton : null, { width: windowWidth * 0.9 }]}
-              onPress={() => setSelectedAllergies(selectedAllergies.includes(allergy) ? selectedAllergies.filter(a => a !== allergy) : [...selectedAllergies, allergy])}
+              style={[styles.choiceButton, userInfo.selectedAllergies.includes(allergy) ? styles.selectedButton : null, { width: windowWidth * 0.9 }]}
+              onPress={() => toggleAllergy(allergy)}
             >
               <Text style={[styles.choiceText, { fontSize: windowWidth * 0.05, textAlign: 'center' }]}>{allergy}</Text>
             </TouchableOpacity>

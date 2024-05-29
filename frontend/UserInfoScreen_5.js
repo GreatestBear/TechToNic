@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, StyleSheet, Dimensions, Alert } from 'react-native';
 import HeaderComponent from './HeaderComponent';
 import ButtonComponent_0 from './ButtonComponent_0';
+import { useUserInfo } from './UserInfoContext';
 
 const UserInfoScreen_5 = ({ navigation }) => {
-  const [selectedMedications, setSelectedMedications] = useState([]);
+  const { userInfo, updateUserInfo } = useUserInfo();
   const [windowWidth, setWindowWidth] = useState(Dimensions.get('window').width);
 
   // 창 크기가 변경될 때마다 새로운 창 크기를 설정합니다.
@@ -21,6 +22,7 @@ const UserInfoScreen_5 = ({ navigation }) => {
       subscription?.remove();
     };
   }, []);
+
   const medications = [
     "갑상건기능저하증약", "갑상선기능항진증약", "고지혈증약", "고혈압약",
     "골다공증약", "당뇨약", "덱스트로메토르판(기침약)", "디곡신(심장약)",
@@ -32,20 +34,20 @@ const UserInfoScreen_5 = ({ navigation }) => {
   ];
 
   const toggleMedication = (medication) => {
-    if (selectedMedications.includes(medication)) {
-      setSelectedMedications(selectedMedications.filter(m => m !== medication));
-    } else {
-      setSelectedMedications([...selectedMedications, medication]);
-    }
+    const updatedMedications = userInfo.selectedMedications.includes(medication)
+      ? userInfo.selectedMedications.filter(m => m !== medication)
+      : [...userInfo.selectedMedications, medication];
+    
+    updateUserInfo('selectedMedications', updatedMedications);
   };
 
   const handleNext = () => {
-    if (selectedMedications.length === 0) {
+    if (userInfo.selectedMedications.length === 0) {
       Alert.alert('경고', '현재 먹고 있는 약을 선택해주세요!');
       return;
     }
-    console.log('Selected Medications: ', selectedMedications);
-    navigation.navigate('UserInfo_6', { selectedMedications });
+    console.log('Selected Medications: ', userInfo.selectedMedications);
+    navigation.navigate('UserInfo_6', { selectedMedications: userInfo.selectedMedications });
   };
 
   const handlePrevious = () => {
@@ -60,7 +62,7 @@ const UserInfoScreen_5 = ({ navigation }) => {
       {medications.map((medication, index) => (
         <TouchableOpacity
           key={index}
-          style={[styles.button, selectedMedications.includes(medication) ? styles.selectedButton : null, { width: windowWidth * 0.9 }]}
+          style={[styles.button, userInfo.selectedMedications.includes(medication) ? styles.selectedButton : null, { width: windowWidth * 0.9 }]}
           onPress={() => toggleMedication(medication)}
         >
           <Text style={[styles.buttonText, { fontSize: windowWidth * 0.04 }]}>{medication}</Text>

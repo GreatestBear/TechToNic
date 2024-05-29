@@ -2,14 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, Button, TextInput, StyleSheet, TouchableOpacity, Dimensions, Alert } from 'react-native';
 import HeaderComponent from './HeaderComponent';
 import ButtonComponent_0 from './ButtonComponent_0';
-
-
+import { useUserInfo } from './UserInfoContext';
 
 const UserInfoScreen1 = ({ navigation }) => {
-  const [height, setHeight] = useState('');
-  const [weight, setWeight] = useState('');
-  const [age, setage] = useState('');
-  const [isSmoker, setIsSmoker] = useState(null);
+  const { userInfo, updateUserInfo } = useUserInfo();
   const [windowWidth, setWindowWidth] = useState(Dimensions.get('window').width);
 
   // 창 크기가 변경될 때마다 새로운 창 크기를 설정합니다.
@@ -26,8 +22,8 @@ const UserInfoScreen1 = ({ navigation }) => {
   }, []);
 
   const handleNext = () => {
-    if (height && weight && isSmoker !== null) {
-      navigation.navigate('UserInfo_3', { height, weight, isSmoker });
+    if (userInfo.height && userInfo.weight && userInfo.age && userInfo.isSmoker !== null) {
+      navigation.navigate('UserInfo_3');
     } else {
       Alert.alert('경고', '모든 정보를 입력해주세요.');
     }
@@ -42,30 +38,32 @@ const UserInfoScreen1 = ({ navigation }) => {
 
       <View style={{ marginTop: 40 }} />
       <HeaderComponent> 1 / 5</HeaderComponent>
+      
       <Text style={[styles.subtitle, { fontSize: windowWidth * 0.07, textAlign: 'center', }]}>기본 건강 정보를 알려주세요</Text>
+      
       <Text style={[styles.subtitle, { fontSize: windowWidth * 0.06 }]}>키와 몸무게, 나이를 알려주세요</Text>
 
       <Text style={[styles.subtitle, { fontSize: windowWidth * 0.07 }]}>키를 입력해 주세요</Text>
       <TextInput
         style={[styles.input, { fontSize: windowWidth * 0.07 }]}
-        value={height}
-        onChangeText={setHeight}
+        value={userInfo.height}
+        onChangeText={(value) => updateUserInfo('height', value)}
         keyboardType="numeric"
       />
 
       <Text style={[styles.subtitle, { fontSize: windowWidth * 0.07 }]}>몸무게를 입력해 주세요</Text>
       <TextInput
         style={[styles.input, { fontSize: windowWidth * 0.07 }]}
-        value={weight}
-        onChangeText={setWeight}
+        value={userInfo.weight}
+        onChangeText={(value) => updateUserInfo('weight', value)}
         keyboardType="numeric"
       />
 
       <Text style={[styles.subtitle, { fontSize: windowWidth * 0.07 }]}>만 나이를 입력해 주세요</Text>
       <TextInput
         style={[styles.input, { fontSize: windowWidth * 0.07 }]}
-        value={age}
-        onChangeText={setage}
+        value={userInfo.age}
+        onChangeText={(value) => updateUserInfo('age', value)}
         keyboardType="numeric"
       />
 
@@ -74,8 +72,8 @@ const UserInfoScreen1 = ({ navigation }) => {
       <View style={styles.buttonContainer}>
         
         <TouchableOpacity
-          style={[styles.choiceButton, isSmoker ? styles.selectedButton : null, { width: windowWidth * 0.9 }]}
-          onPress={() => setIsSmoker(true)}
+          style={[styles.choiceButton, userInfo.isSmoker ? styles.selectedButton : null, { width: windowWidth * 0.9 }]}
+          onPress={() => updateUserInfo('isSmoker', true)}
         >
          <Text style={[styles.choiceText, { fontSize: windowWidth * 0.05, textAlign: 'center' }]}>네</Text>
         </TouchableOpacity>
@@ -83,8 +81,8 @@ const UserInfoScreen1 = ({ navigation }) => {
         <View style={{ marginBottom: 20 }} />
 
         <TouchableOpacity
-          style={[styles.choiceButton, isSmoker === false ? styles.selectedButton : null, { width: windowWidth * 0.9 }]}
-          onPress={() => setIsSmoker(false)}
+          style={[styles.choiceButton, userInfo.isSmoker === false ? styles.selectedButton : null, { width: windowWidth * 0.9 }]}
+          onPress={() => updateUserInfo('isSmoker', false)}
         >
           <Text style={[styles.choiceText, { fontSize: windowWidth * 0.05, textAlign: 'center' }]}>아니오</Text>
         </TouchableOpacity>

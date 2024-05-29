@@ -16,6 +16,8 @@ import UserInfoScreen_6 from './UserInfoScreen_6';
 import UserInfoScreen_fin from './UserInfoScreen_fin.js';
 
 import { MedProvider } from './MedContext';
+import { UserInfoProvider } from './UserInfoContext'; 
+
 import LoginScreen from './LoginScreen';
 import MainScreen from './MainScreen';
 import AddMed_0 from './AddMed_0.js';
@@ -49,7 +51,7 @@ function AuthStack() {
   );
 }
 
-// 메인 화면과 그 하위 스크린을 포함하는 스택 네비게이터
+
 function MainStack() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
@@ -103,12 +105,14 @@ function MyTabs() {
 export default function App() {
   return (
     <MedProvider>
-      <NavigationContainer>
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="Auth" component={AuthStack} />
-          <Stack.Screen name="App" component={MyTabs} />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <UserInfoProvider> 
+        <NavigationContainer>
+          <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="Auth" component={AuthStack} />
+            <Stack.Screen name="App" component={MyTabs} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </UserInfoProvider>
     </MedProvider>
   );
 }

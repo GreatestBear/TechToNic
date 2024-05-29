@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, StyleSheet, Dimensions, Alert } from 'react-native';
 import HeaderComponent from './HeaderComponent';
 import ButtonComponent_0 from './ButtonComponent_0';
-
+import { useUserInfo } from './UserInfoContext';
 
 const UserInfoScreen_4 = ({ navigation }) => {
-  const [selectedConditions, setSelectedConditions] = useState([]);
+  const { userInfo, updateUserInfo } = useUserInfo();
   const [windowWidth, setWindowWidth] = useState(Dimensions.get('window').width);
 
   // 창 크기가 변경될 때마다 새로운 창 크기를 설정합니다.
@@ -35,20 +35,20 @@ const UserInfoScreen_4 = ({ navigation }) => {
   ];
 
   const toggleCondition = (condition) => {
-    if (selectedConditions.includes(condition)) {
-      setSelectedConditions(selectedConditions.filter(c => c !== condition));
-    } else {
-      setSelectedConditions([...selectedConditions, condition]);
-    }
+    const updatedConditions = userInfo.selectedConditions.includes(condition)
+      ? userInfo.selectedConditions.filter(c => c !== condition)
+      : [...userInfo.selectedConditions, condition];
+    
+    updateUserInfo('selectedConditions', updatedConditions);
   };
 
   const handleNext = () => {
-    if (selectedConditions.length === 0) {
+    if (userInfo.selectedConditions.length === 0) {
       Alert.alert('경고', '가지고 있는 질환을 선택해주세요!');
       return;
     }
-    console.log('Selected Conditions: ', selectedConditions);
-    navigation.navigate('UserInfo_5', { selectedConditions });
+    console.log('Selected Conditions: ', userInfo.selectedConditions);
+    navigation.navigate('UserInfo_5', { selectedConditions: userInfo.selectedConditions });
   };
 
   const handlePrevious = () => {
@@ -63,7 +63,7 @@ const UserInfoScreen_4 = ({ navigation }) => {
       {conditions.map((condition, index) => (
         <TouchableOpacity
           key={index}
-          style={[styles.button, selectedConditions.includes(condition) ? styles.selectedButton : null, { width: windowWidth * 0.9 }]}
+          style={[styles.button, userInfo.selectedConditions.includes(condition) ? styles.selectedButton : null, { width: windowWidth * 0.9 }]}
           onPress={() => toggleCondition(condition)}
         >
           <Text style={[styles.buttonText, { fontSize: windowWidth * 0.04 }]}>{condition}</Text>
@@ -73,7 +73,6 @@ const UserInfoScreen_4 = ({ navigation }) => {
         <ButtonComponent_0 title="이전" onPress={handlePrevious} style={{ width: windowWidth * 0.4 }} />
         <ButtonComponent_0 title="다음" onPress={handleNext} style={{ width: windowWidth * 0.4 }} />
       </View>
-
     </ScrollView>
   );
 };

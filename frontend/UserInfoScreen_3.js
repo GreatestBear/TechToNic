@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Dimensions, Alert } from 'react-native';
 import HeaderComponent from './HeaderComponent';
 import ButtonComponent_0 from './ButtonComponent_0';
+import { useUserInfo } from './UserInfoContext';
 
 const UserInfoScreen_3 = ({ navigation }) => {
-  const [drinkFrequency, setDrinkFrequency] = useState('');
-  const [hasDisease, setHasDisease] = useState('');
+  const { userInfo, updateUserInfo } = useUserInfo();
   const [windowWidth, setWindowWidth] = useState(Dimensions.get('window').width);
 
   // 창 크기가 변경될 때마다 새로운 창 크기를 설정합니다.
@@ -22,18 +22,18 @@ const UserInfoScreen_3 = ({ navigation }) => {
   }, []);
 
   const handleNext = () => {
-    if (!drinkFrequency || !hasDisease) {
+    if (!userInfo.drinkFrequency || !userInfo.hasDisease) {
       Alert.alert('경고', '음주 빈도와 질병 유무를 모두 선택해주세요.');
       return;
     }
 
-    console.log('음주 빈도: ', drinkFrequency);
-    console.log('질병 유무: ', hasDisease);
+    console.log('음주 빈도: ', userInfo.drinkFrequency);
+    console.log('질병 유무: ', userInfo.hasDisease);
 
-    if (hasDisease === '없어요') {
+    if (userInfo.hasDisease === '없어요') {
       navigation.navigate('UserInfo_5', { selectedConditions: [] });
     } else {
-      navigation.navigate('UserInfo_4', { drinkFrequency, hasDisease });
+      navigation.navigate('UserInfo_4', { drinkFrequency: userInfo.drinkFrequency, hasDisease: userInfo.hasDisease });
     }
   };
 
@@ -49,8 +49,8 @@ const UserInfoScreen_3 = ({ navigation }) => {
       {['주 4회 이상', '주 3회 이상', '주 2회 이상', '주 1회 이상', '음주하지 않음'].map((option, index) => (
         <TouchableOpacity
           key={index}
-          style={[styles.choiceButton, drinkFrequency === option && styles.selectedButton, { width: windowWidth * 0.9 }]}
-          onPress={() => setDrinkFrequency(option)}
+          style={[styles.choiceButton, userInfo.drinkFrequency === option && styles.selectedButton, { width: windowWidth * 0.9 }]}
+          onPress={() => updateUserInfo('drinkFrequency', option)}
         >
           <Text style={[styles.choiceText, { fontSize: windowWidth * 0.05, textAlign: 'center' }]}>{option}</Text>
         </TouchableOpacity>
@@ -59,8 +59,8 @@ const UserInfoScreen_3 = ({ navigation }) => {
       {['없어요', '있어요'].map((option, index) => (
         <TouchableOpacity
           key={index}
-          style={[styles.choiceButton, hasDisease === option && styles.selectedButton, { width: windowWidth * 0.9 }]}
-          onPress={() => setHasDisease(option)}
+          style={[styles.choiceButton, userInfo.hasDisease === option && styles.selectedButton, { width: windowWidth * 0.9 }]}
+          onPress={() => updateUserInfo('hasDisease', option)}
         >
           <Text style={[styles.choiceText, { fontSize: windowWidth * 0.05, textAlign: 'center' }]}>{option}</Text>
         </TouchableOpacity>
