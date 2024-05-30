@@ -1,16 +1,22 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-
+import { navigateToNextScreen } from './navigationHelper';
 
 const { width } = Dimensions.get('window');
-const iconSize = width * 0.3; // 아이콘 크기를 화면 너비의 15%로 설정
+const iconSize = width * 0.3; // 아이콘 크기를 화면 너비의 30%로 설정
 
-const MainScreen = ({ navigation }) => {
+const MainScreen = () => {
+    const navigation = useNavigation();
+
+    const handleNavigation = (screen, params = {}) => {
+        navigateToNextScreen(navigation, screen, params);
+    };
+
     return (
         <View style={styles.container}>
             <View style={styles.section}>
-                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('ChatBot')}>
+                <TouchableOpacity style={styles.button} onPress={() => handleNavigation('ChatBot')}>
                     <Image source={require('./assets/pyeon.png')} style={styles.icon} />
                     <View style={styles.textContainer}>
                         <Text style={styles.header}>편안이에게 물어보세요</Text>
@@ -20,7 +26,7 @@ const MainScreen = ({ navigation }) => {
             </View>
 
             <View style={styles.section}>
-                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('AddMed_0')}>
+                <TouchableOpacity style={styles.button} onPress={() => handleNavigation('AddMed_0')}>
                     <Image source={require('./assets/Med.png')} style={styles.icon} />
                     <View style={styles.textContainer}>
                         <Text style={styles.header}>약 추가하기</Text>
@@ -34,11 +40,7 @@ const MainScreen = ({ navigation }) => {
                     style={styles.button}
                     onPress={() => {
                         console.log("Navigating to MedNote");
-                        try {
-                            navigation.navigate('MedNote', { medications: [] }); // 기본값으로 비어있는 배열 전달
-                        } catch (error) {
-                            console.error("Navigation error:", error);
-                        }
+                        handleNavigation('MedNote', { medications: [] }); // 기본값으로 비어있는 배열 전달
                     }}
                 >
                     <Image source={require('./assets/Note.png')} style={styles.icon} />
@@ -50,7 +52,7 @@ const MainScreen = ({ navigation }) => {
             </View>
 
             <View style={styles.section}>
-                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Monitoring')}>
+                <TouchableOpacity style={styles.button} onPress={() => handleNavigation('Monitoring')}>
                     <Image source={require('./assets/Monitor.png')} style={styles.icon} />
                     <View style={styles.textContainer}>
                         <Text style={styles.header}>건강 정보 모니터링</Text>

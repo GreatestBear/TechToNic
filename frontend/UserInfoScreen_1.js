@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Image, Dimensions } from 'rea
 import { useNavigation } from '@react-navigation/native';
 import HeaderComponent from './HeaderComponent'; 
 import ButtonComponent_0 from './ButtonComponent_0';
+import { navigateToNextScreen, navigateToPreviousScreen } from './navigationHelper';
 
 
 export default function WelcomeScreen() {
@@ -19,24 +20,19 @@ export default function WelcomeScreen() {
 
     return () => {
       subscription?.remove();
-    };
+    };''
   }, []);
 
-  function handleCheckHealth() {
-    navigation.navigate('UserInfo_2');
-  }
+  const handleCheckHealth = () => {
+    navigateToNextScreen(navigation, 'UserInfo_1');
+  };
 
-  function handleExitApp() {
-    console.log("메인 화면으로"); // 버튼 누른다고 앱 종료는 지원 X -> 메인 화면으로 이동하도록 변경
-    // navigate to MainScreen
-    navigation.navigate('App', {
-      screen: '메인',
-      params: {
-        screen: 'Main',
-      },
-    });
+  const handleExitApp = () => {
+    console.log("메인 화면으로");
+    navigateToNextScreen(navigation, 'UserInfo_fin');
+  };
     
-  }
+
 
   return (
     <View style={styles.container}>

@@ -4,6 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useMedications } from './MedContext'; // Context import
 import HeaderComponent from './HeaderComponent';
 import ButtonComponent_0 from './ButtonComponent_0';
+import { navigateToNextScreen, navigateToPreviousScreen } from './navigationHelper';
 
 const AddMed_2 = ({ navigation }) => {
   const { medications, removeMedication } = useMedications(); // Context 사용
@@ -21,10 +22,18 @@ const AddMed_2 = ({ navigation }) => {
     };
   }, []);
 
+  const handlePrevious = () => {
+    navigateToPreviousScreen(navigation);
+  };
+
+  const handleNext = (screen) => {
+    navigateToNextScreen(navigation, screen);
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        <TouchableOpacity onPress={handlePrevious}>
           <Ionicons name="arrow-back" size={30} color="black" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>복용중인 약</Text>
@@ -48,12 +57,12 @@ const AddMed_2 = ({ navigation }) => {
       <View style={styles.buttonContainer}>
         <ButtonComponent_0
           title="더 추가하기"
-          onPress={() => navigation.navigate('AddMed_1')}
+          onPress={() => handleNext('AddMed_1')}
           style={{ width: windowWidth * 0.4 }}
         />
         <ButtonComponent_0
           title="메인 화면으로"
-          onPress={() => navigation.navigate('Main')}
+          onPress={() => handleNext('Main')}
           style={{ width: windowWidth * 0.4 }}
         />
       </View>

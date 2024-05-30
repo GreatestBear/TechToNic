@@ -2,18 +2,14 @@ import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import HeaderComponent from './HeaderComponent';
 import ButtonComponent_0 from './ButtonComponent_0';
+import { navigateToNextScreen } from './navigationHelper';
+
 
 const UserInfoScreen_fin = ({ navigation }) => {
   const handleNext = () => {
-    
-    navigation.navigate('App', {
-      screen: '메인',
-      params: {
-        screen: 'Main',
-      },
-    });
-  };
-
+    navigateToNextScreen(navigation, 'UserInfo_fin')
+  }
+  
   return (
     <View style={styles.container}>
       <Image

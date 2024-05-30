@@ -3,6 +3,7 @@ import { View, Text, Button, TextInput, StyleSheet, TouchableOpacity, Dimensions
 import HeaderComponent from './HeaderComponent';
 import ButtonComponent_0 from './ButtonComponent_0';
 import { useUserInfo } from './UserInfoContext';
+import { navigateToNextScreen, navigateToPreviousScreen } from './navigationHelper';
 
 const UserInfoScreen1 = ({ navigation }) => {
   const { userInfo, updateUserInfo } = useUserInfo();
@@ -23,14 +24,14 @@ const UserInfoScreen1 = ({ navigation }) => {
 
   const handleNext = () => {
     if (userInfo.height && userInfo.weight && userInfo.age && userInfo.isSmoker !== null) {
-      navigation.navigate('UserInfo_3');
+      navigateToNextScreen(navigation, 'UserInfo_2');
     } else {
       Alert.alert('경고', '모든 정보를 입력해주세요.');
     }
   };
 
   const handlePrevious = () => {
-    navigation.navigate('UserInfo_1');
+    navigateToPreviousScreen(navigation);
   };
 
   return (

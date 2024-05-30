@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet, Dimensions, Alert } from 'rea
 import HeaderComponent from './HeaderComponent';
 import ButtonComponent_0 from './ButtonComponent_0';
 import { useUserInfo } from './UserInfoContext';
+import { navigateToNextScreen } from './navigationHelper';
 
 const UserInfoScreen_3 = ({ navigation }) => {
   const { userInfo, updateUserInfo } = useUserInfo();
@@ -31,16 +32,15 @@ const UserInfoScreen_3 = ({ navigation }) => {
     console.log('질병 유무: ', userInfo.hasDisease);
 
     if (userInfo.hasDisease === '없어요') {
-      navigation.navigate('UserInfo_5', { selectedConditions: [] });
+      navigateToNextScreen(navigation, 'UserInfo_4', { selectedConditions: [] });
     } else {
-      navigation.navigate('UserInfo_4', { drinkFrequency: userInfo.drinkFrequency, hasDisease: userInfo.hasDisease });
+      navigateToNextScreen(navigation, 'UserInfo_3', { drinkFrequency: userInfo.drinkFrequency, hasDisease: userInfo.hasDisease });
     }
   };
-
+  
   const handlePrevious = () => {
-    navigation.goBack();
+    navigateToPreviousScreen(navigation);
   };
-
   return (
     <View style={styles.container}>
       <View style={{ marginTop: 40 }} />

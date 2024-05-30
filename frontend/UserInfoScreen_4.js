@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, ScrollView, StyleSheet, Dimensions, Alert
 import HeaderComponent from './HeaderComponent';
 import ButtonComponent_0 from './ButtonComponent_0';
 import { useUserInfo } from './UserInfoContext';
+import { navigateToNextScreen, navigateToPreviousScreen } from './navigationHelper';
 
 const UserInfoScreen_4 = ({ navigation }) => {
   const { userInfo, updateUserInfo } = useUserInfo();
@@ -48,11 +49,12 @@ const UserInfoScreen_4 = ({ navigation }) => {
       return;
     }
     console.log('Selected Conditions: ', userInfo.selectedConditions);
-    navigation.navigate('UserInfo_5', { selectedConditions: userInfo.selectedConditions });
+    // navigation.navigate('UserInfo_5', { selectedConditions: userInfo.selectedConditions });
+    navigateToNextScreen(navigation, 'UserInfo_4', { selectedConditions: userInfo.selectedConditions });
   };
-
+  
   const handlePrevious = () => {
-    navigation.goBack();
+    navigateToPreviousScreen(navigation);
   };
 
   return (

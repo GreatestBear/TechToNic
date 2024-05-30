@@ -3,6 +3,8 @@ import { View, Text, TouchableOpacity, ScrollView, StyleSheet, Dimensions, Alert
 import HeaderComponent from './HeaderComponent';
 import ButtonComponent_0 from './ButtonComponent_0';
 import { useUserInfo } from './UserInfoContext';
+import { navigateToNextScreen, navigateToPreviousScreen } from './navigationHelper';
+
 
 const UserInfoScreen_5 = ({ navigation }) => {
   const { userInfo, updateUserInfo } = useUserInfo();
@@ -40,19 +42,20 @@ const UserInfoScreen_5 = ({ navigation }) => {
     
     updateUserInfo('selectedMedications', updatedMedications);
   };
-
+  
   const handleNext = () => {
     if (userInfo.selectedMedications.length === 0) {
       Alert.alert('경고', '현재 먹고 있는 약을 선택해주세요!');
       return;
     }
     console.log('Selected Medications: ', userInfo.selectedMedications);
-    navigation.navigate('UserInfo_6', { selectedMedications: userInfo.selectedMedications });
+    navigateToNextScreen(navigation, 'UserInfo_5', { selectedMedications: userInfo.selectedMedications });
+  };
+  
+  const handlePrevious = () => {
+    navigateToPreviousScreen(navigation);
   };
 
-  const handlePrevious = () => {
-    navigation.goBack();
-  };
 
   return (
     <ScrollView contentContainerStyle={styles.container}>

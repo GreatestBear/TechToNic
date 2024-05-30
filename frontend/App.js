@@ -4,6 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/Ionicons'; // 아이콘 라이브러리 임포트
 import { parse } from 'fast-xml-parser';
+import { navigateToNextScreen } from './navigationHelper';
 
 
 import UserInfoScreen_0 from './UserInfoScreen_0';
@@ -14,6 +15,7 @@ import UserInfoScreen_4 from './UserInfoScreen_4';
 import UserInfoScreen_5 from './UserInfoScreen_5';
 import UserInfoScreen_6 from './UserInfoScreen_6';
 import UserInfoScreen_fin from './UserInfoScreen_fin.js';
+
 
 import { MedProvider } from './MedContext';
 import { UserInfoProvider } from './UserInfoContext'; 

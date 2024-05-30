@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, Image, StyleSheet, Dimensions } from 'react-native';
 import HeaderComponent from './HeaderComponent'; 
+import { navigateToNextScreen } from './navigationHelper';
+
 
 const LoginScreen = ({ navigation }) => {
   const [windowWidth, setWindowWidth] = useState(Dimensions.get('window').width);
 
-  // 창 크기가 변경될 때마다 새로운 창 크기를 설정합니다.
+
   useEffect(() => {
     const updateDimensions = ({ window }) => {
       setWindowWidth(window.width);
@@ -21,17 +23,17 @@ const LoginScreen = ({ navigation }) => {
 
   const handleKakaoLogin = () => {
     console.log('카카오 로그인 실행');
-    navigation.navigate('UserInfo');
+    navigateToNextScreen(navigation, 'Login');
   };
 
   const handleNaverLogin = () => {
     console.log('네이버 로그인 실행');
-    navigation.navigate('UserInfo');
+    navigateToNextScreen(navigation, 'Login');
   };
 
   const handleOtherLogin = () => {
     console.log('다른 방법으로 로그인하기 실행');
-    navigation.navigate('UserInfo');
+    navigateToNextScreen(navigation, 'Login');
   };
 
   return (

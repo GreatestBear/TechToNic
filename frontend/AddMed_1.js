@@ -5,7 +5,7 @@ import { XMLParser } from 'fast-xml-parser';
 import { useMedications } from './MedContext'; // Context import
 import HeaderComponent from './HeaderComponent';
 import ButtonComponent_0 from './ButtonComponent_0';
-
+import { navigateToNextScreen, navigateToPreviousScreen } from './navigationHelper';
 
 const AddMed_1 = ({ navigation }) => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -59,11 +59,11 @@ const AddMed_1 = ({ navigation }) => {
   }, []);
 
   const handlePrevious = () => {
-    navigation.navigate('AddMed_0');
+    navigateToPreviousScreen(navigation);
   };
 
   const handleNext = () => {
-    navigation.navigate('AddMed_2');
+    navigateToNextScreen(navigation, 'AddMed_2');
   };
 
   return (
@@ -71,7 +71,7 @@ const AddMed_1 = ({ navigation }) => {
 
       <View style={styles.searchContainer}>
         
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        <TouchableOpacity onPress={() => handlePrevious()}>
           <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
         

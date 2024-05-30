@@ -2,11 +2,12 @@ import React from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
 import HeaderComponent from './HeaderComponent'; 
 import ButtonComponent_0 from './ButtonComponent_0';
+import { navigateToNextScreen } from './navigationHelper';
 
 const UserInfoScreen = ({ navigation }) => {
     const submit = () => {
         console.log('다음 화면으로 이동');
-        navigation.navigate('UserInfo_1');
+        navigateToNextScreen(navigation, 'UserInfo');
     };
     
     

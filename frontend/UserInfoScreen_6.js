@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, ScrollView, StyleSheet, Dimensions, Alert
 import HeaderComponent from './HeaderComponent';
 import ButtonComponent_0 from './ButtonComponent_0';
 import { useUserInfo } from './UserInfoContext';
+import { navigateToNextScreen, navigateToPreviousScreen } from './navigationHelper';
 
 const UserInfoScreen_6 = ({ navigation }) => {
   const { userInfo, updateUserInfo } = useUserInfo();
@@ -27,25 +28,25 @@ const UserInfoScreen_6 = ({ navigation }) => {
     "조개/갑각류", "돼지풀/국화/금잔화/데이지", "황", "소나무껍질", "대두",
     "미역/석류", "우유/유제품", "꽃가루"
   ];
-
   const handleNext = () => {
     if (userInfo.hasAllergies === null) {
       Alert.alert('경고', '알레르기의 유무를 선택해주세요!');
       return;
     }
-
+  
     if (userInfo.hasAllergies && userInfo.selectedAllergies.length === 0) {
       Alert.alert('경고', '알레르기를 선택해주세요! 만약 알레르기가 없으시다면 아니요, 없어요를 선택해주세요!');
       return;
     }
-
+  
     console.log('Selected Allergies: ', userInfo.selectedAllergies);
-    navigation.navigate('UserInfo_fin', { selectedAllergies: userInfo.selectedAllergies });
+    navigateToNextScreen(navigation, 'UserInfo_6', { selectedAllergies: userInfo.selectedAllergies });
+  };
+  
+  const handlePrevious = () => {
+    navigateToPreviousScreen(navigation);
   };
 
-  const handlePrevious = () => {
-    navigation.goBack();
-  };
 
   const toggleAllergy = (allergy) => {
     const updatedAllergies = userInfo.selectedAllergies.includes(allergy)
