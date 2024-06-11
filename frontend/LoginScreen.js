@@ -33,7 +33,7 @@ const LoginScreen = ({ navigation }) => {
 
   const handleOtherLogin = () => {
     console.log('다른 방법으로 로그인하기 실행');
-    navigateToNextScreen(navigation, 'Login');
+    navigateToNextScreen(navigation, 'OtherLogin');
   };
 
   return (

@@ -46,6 +46,11 @@ const Monitoring = ({ navigation }) => {
         onPress={() => handleNavigation('Monitoring3')}
         style={{ width: windowWidth * 0.8 }}
       />
+      <ButtonComponent_0
+        title="알레르기 정보"
+        onPress={() => handleNavigation('Monitoring3')}
+        style={{ width: windowWidth * 0.8 }}
+      />
     </View>
   );
 };

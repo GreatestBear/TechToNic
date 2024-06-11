@@ -21,6 +21,9 @@ import { MedProvider } from './MedContext';
 import { UserInfoProvider } from './UserInfoContext'; 
 
 import LoginScreen from './LoginScreen';
+import OtherLogin from './OtherLogin.js';
+import SignUp from './SignUp.js';
+import SignIn from './SignIn.js';
 import MainScreen from './MainScreen';
 import AddMed_0 from './AddMed_0.js';
 import AddMed_1 from './AddMed_1.js';
@@ -32,6 +35,12 @@ import Monitoring from './Monitoring';
 import Monitoring1 from './Monitoring1';
 import Monitoring2 from './Monitoring2';
 import Monitoring3 from './Monitoring3';
+import Monitoring4 from './Monitoring4';
+import Modify from './Modify';
+import Modify1 from './Modify1';
+import Modify2 from './Modify2';
+import Modify3 from './Modify3';
+import Modify4 from './Modify4';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -41,6 +50,9 @@ function AuthStack() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Login" component={LoginScreen} />
+      <Stack.Screen name= "OtherLogin" component={OtherLogin} />
+      <Stack.Screen name= "SignUp" component={SignUp} />
+      <Stack.Screen name= "SignIn" component={SignIn} />
       <Stack.Screen name="UserInfo" component={UserInfoScreen_0} />
       <Stack.Screen name="UserInfo_1" component={UserInfoScreen_1} />
       <Stack.Screen name="UserInfo_2" component={UserInfoScreen_2} />
@@ -68,6 +80,12 @@ function MainStack() {
       <Stack.Screen name="Monitoring1" component={Monitoring1} />
       <Stack.Screen name="Monitoring2" component={Monitoring2} />
       <Stack.Screen name="Monitoring3" component={Monitoring3} />
+      <Stack.Screen name="Monitoring4" component={Monitoring4} />
+      <Stack.Screen name="Modify" component={Modify} />
+      <Stack.Screen name="Modify1" component={Modify1} />
+      <Stack.Screen name="Modify2" component={Modify2} />
+      <Stack.Screen name="Modify3" component={Modify3} />
+      <Stack.Screen name="Modify4" component={Modify4} />
     </Stack.Navigator>
   );
 }

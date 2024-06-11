@@ -1,6 +1,7 @@
 export const navigateToNextScreen = (navigation, currentScreen, params) => {
   const screenFlow = {
     'Login': 'UserInfo',
+    'OtherLogin' :'OtherLogin',
     'UserInfo': 'UserInfo_1',
     'UserInfo_1': 'UserInfo_2',
     'UserInfo_2': 'UserInfo_3',
@@ -19,6 +20,8 @@ export const navigateToNextScreen = (navigation, currentScreen, params) => {
     'Monitoring1': 'Monitoring1',
     'Monitoring2': 'Monitoring2',
     'Monitoring3': 'Monitoring3',
+    'Monitoring4': 'Monitoring4',
+    'Modify' : 'Modify',
   };
 
   const nextScreen = typeof screenFlow[currentScreen] === 'function'

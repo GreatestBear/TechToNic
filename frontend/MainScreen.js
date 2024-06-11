@@ -52,8 +52,18 @@ const MainScreen = () => {
             </View>
 
             <View style={styles.section}>
+                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Modify')}>
+                    <Image source={require('./assets/Add.png')} style={styles.icon} />
+                    <View style={styles.textContainer}>
+                        <Text style={styles.header}>건강 정보 수정</Text>
+                        <Text style={styles.description}>수정을 원하시는 건강 정보를 수정 해보세요.</Text>
+                    </View>
+                </TouchableOpacity>
+            </View>
+
+            <View style={styles.section}>
                 <TouchableOpacity style={styles.button} onPress={() => handleNavigation('Monitoring')}>
-                    <Image source={require('./assets/Monitor.png')} style={styles.icon} />
+                    <Image source={require('./assets/Monitoring.png')} style={styles.icon} />
                     <View style={styles.textContainer}>
                         <Text style={styles.header}>건강 정보 모니터링</Text>
                         <Text style={styles.description}>건강 정보를 모니터링 해보세요.</Text>
