@@ -32,10 +32,6 @@ import MedNote from './MedNote.js';
 import MedNote_1 from './MedNote_1.js';
 import ChatBot from './ChatBot';
 import Monitoring from './Monitoring';
-import Monitoring1 from './Monitoring1';
-import Monitoring2 from './Monitoring2';
-import Monitoring3 from './Monitoring3';
-import Monitoring4 from './Monitoring4';
 import Modify from './Modify';
 import Modify1 from './Modify1';
 import Modify2 from './Modify2';
@@ -77,10 +73,6 @@ function MainStack() {
       <Stack.Screen name="MedNote_1" component={MedNote_1} />
       <Stack.Screen name="ChatBot" component={ChatBot} />
       <Stack.Screen name="Monitoring" component={Monitoring} />
-      <Stack.Screen name="Monitoring1" component={Monitoring1} />
-      <Stack.Screen name="Monitoring2" component={Monitoring2} />
-      <Stack.Screen name="Monitoring3" component={Monitoring3} />
-      <Stack.Screen name="Monitoring4" component={Monitoring4} />
       <Stack.Screen name="Modify" component={Modify} />
       <Stack.Screen name="Modify1" component={Modify1} />
       <Stack.Screen name="Modify2" component={Modify2} />

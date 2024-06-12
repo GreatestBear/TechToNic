@@ -1,72 +1,182 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, Dimensions } from 'react-native';
-import HeaderComponent from './HeaderComponent';
+import React from 'react';
+import { View, Text, StyleSheet, ScrollView, Dimensions } from 'react-native';
+import { useUserInfo } from './UserInfoContext';
 import ButtonComponent_0 from './ButtonComponent_0';
-import { navigateToNextScreen, navigateToPreviousScreen } from './navigationHelper';
 
-const Monitoring = ({ navigation }) => {
-  const [windowWidth, setWindowWidth] = useState(Dimensions.get('window').width);
+const Monitoring = () => {
+    const { userInfo } = useUserInfo();
+    const {
+        height,
+        weight,
+        age,
+        isSmoker,
+        drinkFrequency,
+        hasDisease,
+        selectedConditions,
+        selectedMedications,
+        selectedAllergies
+    } = userInfo;
 
-  // 창 크기가 변경될 때마다 새로운 창 크기를 설정합니다.
-  useEffect(() => {
-    const updateDimensions = ({ window }) => {
-      setWindowWidth(window.width);
-    };
+    return (
+        <ScrollView contentContainerStyle={styles.monitoringContainer}>
+            <Text style={styles.header}>내 건강 데이터</Text>
+            <View style={styles.row}>
+                <Text style={styles.subHeader}>건강 설문</Text>
+                <Text style={styles.date}>{new Date().toLocaleDateString()} 기준</Text>
+            </View>
 
-    const subscription = Dimensions.addEventListener('change', updateDimensions);
+            <View style={styles.section}>
+                <Text style={styles.sectionHeader}>신체정보</Text>
+                <View style={styles.infoRow}>
+                    <Text style={styles.infotext}>{height ? `${height} cm` : '신장 정보 없음'}</Text>
+                    <Text style={styles.infotext}>{weight ? `${weight} kg` : '체중 정보 없음'}</Text>
+                    <Text style={styles.infotext}>{age ? `만 ${age}세` : '나이 정보 없음'}</Text>
+                </View>
+            </View>
 
-    return () => {
-      subscription?.remove();
-    };
-  }, []);
+            <View style={styles.divider} />
 
-  const handleNavigation = (screen) => {
-    navigateToNextScreen(navigation, screen);
-  };
+            <View style={styles.section}>
+                <Text style={styles.sectionHeader}>질환</Text>
+                {selectedConditions.length > 0 ? (
+                    <View style={styles.tagContainer}>
+                        {selectedConditions.map((condition, index) => (
+                            <View key={index} style={styles.tag}>
+                                <Text style={styles.tagText}>{condition}</Text>
+                            </View>
+                        ))}
+                    </View>
+                ) : (
+                    <Text style={styles.infoText}>질환 정보 없음</Text>
+                )}
+            </View>
 
-  return (
-    <View style={styles.container}>
-      <Image source={require('./assets/pyeon.png')} style={styles.image} />
-      <HeaderComponent>어떤 건강 정보를 확인하시겠어요?</HeaderComponent>
+            <View style={styles.divider} />
 
-      <View style={{ marginBottom: 20 }} />
-      
-      <ButtonComponent_0
-        title="기본 정보(키, 몸무게, 흡연/음주 여부)"
-        onPress={() => handleNavigation('Monitoring1')}
-        style={{ width: windowWidth * 0.8 }}
-      />
-      <ButtonComponent_0
-        title="갖고 있는 질환"
-        onPress={() => handleNavigation('Monitoring2')}
-        style={{ width: windowWidth * 0.8 }}
-      />
-      <ButtonComponent_0
-        title="복용 중인 약"
-        onPress={() => handleNavigation('Monitoring3')}
-        style={{ width: windowWidth * 0.8 }}
-      />
-      <ButtonComponent_0
-        title="알레르기 정보"
-        onPress={() => handleNavigation('Monitoring3')}
-        style={{ width: windowWidth * 0.8 }}
-      />
-    </View>
-  );
+            <View style={styles.section}>
+                <Text style={styles.sectionHeader}>복용 중인 약</Text>
+                {selectedMedications.length > 0 ? (
+                    <View style={styles.tagContainer}>
+                        {selectedMedications.map((medication, index) => (
+                            <View key={index} style={styles.tag}>
+                                <Text style={styles.tagText}>{medication}</Text>
+                            </View>
+                        ))}
+                    </View>
+                ) : (
+                    <Text style={styles.infoText}>복용 중인 약 정보 없음</Text>
+                )}
+            </View>
+
+            <View style={styles.divider} />
+
+            <View style={styles.section}>
+                <Text style={styles.sectionHeader}>알레르기</Text>
+                {selectedAllergies.length > 0 ? (
+                    <View style={styles.tagContainer}>
+                        {selectedAllergies.map((allergy, index) => (
+                            <View key={index} style={styles.tag}>
+                                <Text style={styles.tagText}>{allergy}</Text>
+                            </View>
+                        ))}
+                    </View>
+                ) : (
+                    <Text style={styles.infoText}>알레르기 정보 없음</Text>
+                )}
+            </View>
+
+            <View style={styles.divider} />
+
+            <View style={styles.footer}>
+                <ButtonComponent_0 
+                    title="자세히 보기" 
+                    onPress={() => alert('자세히 보기 클릭됨')} 
+                    style={{ width: Dimensions.get('window').width * 0.4 }} 
+                />
+                <ButtonComponent_0 
+                    title="정보 수정하기" 
+                    onPress={() => alert('정보 수정하기 클릭됨')} 
+                    style={{ width: Dimensions.get('window').width * 0.4 }} 
+                />
+            </View>
+        </ScrollView>
+    );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 16,
-    backgroundColor:'#fff',
+    monitoringContainer: {
+        flexGrow: 1,
+        padding: 20,
+        backgroundColor: '#fff',
+        borderRadius: 10,
+    },
+    header: {
+        fontSize: 28,
+        fontWeight: 'bold',
+        marginBottom: 10,
+        textAlign: 'left',
+    },
+    subHeader: {
+        fontSize: 22,
+        fontWeight: 'bold',
+        marginBottom: 5,
+        textAlign: 'left',
+    },
+    date: {
+        fontSize: 18,
+        marginBottom: 20,
+        textAlign: 'right',
+    },
+    section: {
+        marginBottom: 20,
+    },
+    sectionHeader: {
+        fontSize: 22,
+        fontWeight: 'bold',
+        marginBottom: 10,
+    },
+    infoRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
+    row: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginBottom: 20,
   },
-  image: {
-    width: 300, // 이미지 너비를 300으로 설정
-    height: 300, // 이미지 높이를 300으로 설정
-  },
+    infoText: {
+        fontSize: 16,
+        marginBottom: 5,
+    },
+    infotext: {
+      fontSize: 22,
+      marginBottom: 5,
+      fontWeight: 'bold',
+    },
+    tagContainer: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+    },
+    tag: {
+        backgroundColor: '#F3F4F6',
+        padding: 10,
+        borderRadius: 20,
+        margin: 5,
+    },
+    tagText: {
+        fontSize: 16,
+    },
+    divider: {
+        borderBottomColor: '#ddd',
+        borderBottomWidth: 1,
+        marginVertical: 10,
+    },
+    footer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginTop: 20,
+    },
 });
 
 export default Monitoring;
