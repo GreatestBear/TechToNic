@@ -4,7 +4,7 @@ import { useUserInfo } from './UserInfoContext';
 import ButtonComponent_0 from './ButtonComponent_0';
 
 const Monitoring = () => {
-    const { userInfo } = useUserInfo();
+    const { userInfo } = useUserInfo();   
     const {
         height,
         weight,
